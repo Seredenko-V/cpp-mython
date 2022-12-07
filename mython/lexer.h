@@ -8,8 +8,11 @@
 #include <variant>
 #include <vector>
 #include <typeinfo>
+#include <map>
 
 namespace parse {
+
+const uint16_t NUM_SPACE_DENT_ = 2u; // количество пробелов у отступа
 
 namespace token_type {
     struct Number {  // Лексема «число»
@@ -160,7 +163,6 @@ private:
     std::istream& input_tokens_;
     std::vector<Token> tokens_; // распарсенные токены
     size_t index_current_token_ = 0;
-    const uint16_t num_space_dent_ = 2u; // количество пробелов у отступа
     uint16_t current_dent_ = 0; // текущее количество оступов
 };
 

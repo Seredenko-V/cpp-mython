@@ -155,13 +155,13 @@ void Lexer::ExtractDent() {
         ++count_space;
     }
     // нечетное кол-во пробелов недопустимо
-    if (count_space % num_space_dent_) {
+    if (count_space % NUM_SPACE_DENT_) {
         string num_space = to_string(count_space);
         throw LexerError("One of the indents contains an odd number of spaces. Num space = "s + num_space);
     }
 
     // разница в отступах
-    int16_t delta_dent = count_space / num_space_dent_ - current_dent_;
+    int16_t delta_dent = count_space / NUM_SPACE_DENT_ - current_dent_;
     while (delta_dent > 0) {
         tokens_.emplace_back(token_type::Indent{});
         ++current_dent_;
@@ -193,44 +193,25 @@ void Lexer::ExtractNewLine() {
 bool Lexer::AddKeyword(const std::string& word) {
     size_t old_size = tokens_.size();
 
-    if (word == "class"s) {
-        tokens_.emplace_back(token_type::Class{});
-    }
-    if (word == "return"s) {
-        tokens_.emplace_back(token_type::Return{});
-    }
-    if (word == "if"s) {
-        tokens_.emplace_back(token_type::If{});
-    }
-    if (word == "else"s) {
-        tokens_.emplace_back(token_type::Else{});
-    }
-    if (word == "def"s) {
-        tokens_.emplace_back(token_type::Def{});
-    }
-    if (word == "print"s) {
-        tokens_.emplace_back(token_type::Print{});
-    }
-    if (word == "or"s) {
-        tokens_.emplace_back(token_type::Or{});
-    }
-    if (word == "None"s) {
-        tokens_.emplace_back(token_type::None{});
-    }
-    if (word == "and"s) {
-        tokens_.emplace_back(token_type::And{});
-    }
-    if (word == "not"s) {
-        tokens_.emplace_back(token_type::Not{});
-    }
-    if (word == "True"s) {
-        tokens_.emplace_back(token_type::True{});
-    }
-    if (word == "False"s) {
-        tokens_.emplace_back(token_type::False{});
-    }
+    static map<string, Token> types_tokens {
+        {"class"s, token_type::Class{}},
+        {"return"s, token_type::Return{}},
+        {"if"s, token_type::If{}},
+        {"else"s, token_type::Else{}},
+        {"def"s, token_type::Def{}},
+        {"print"s, token_type::Print{}},
+        {"or"s, token_type::Or{}},
+        {"None"s, token_type::None{}},
+        {"and"s, token_type::And{}},
+        {"not"s, token_type::Not{}},
+        {"True"s, token_type::True{}},
+        {"False"s, token_type::False{}}
+    };
 
-    return old_size == tokens_.size() ? false : true;
+    if (types_tokens.count(word)) {
+        tokens_.emplace_back(types_tokens.at(word));
+    }
+    return old_size < tokens_.size();
 }
 
 void Lexer::ExtractKeywordOrId() {

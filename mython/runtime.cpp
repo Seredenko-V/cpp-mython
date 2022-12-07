@@ -8,6 +8,12 @@ using namespace std;
 
 namespace runtime {
 
+namespace {
+    const string STR_METHOD = "__str__"s;
+    const string EQ_METHOD = "__eq__"s;
+    const string LT_METHOD = "__lt__"s;
+}  // namespace
+
 ObjectHolder::ObjectHolder(std::shared_ptr<Object> data)
     : data_(std::move(data)) {
 }
@@ -62,8 +68,8 @@ bool IsTrue(const ObjectHolder& object) {
 }
 
 void ClassInstance::Print(std::ostream& os, Context& context) {
-    if (HasMethod("__str__"s, 0)) {
-        Call("__str__"s, {}, context)->Print(os, context);
+    if (HasMethod(STR_METHOD, 0)) {
+        Call(STR_METHOD, {}, context)->Print(os, context);
     } else {
         os << this;
     }
@@ -163,8 +169,8 @@ bool Equal(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
     }
 
     auto class_instance = lhs.TryAs<ClassInstance>();
-    if (class_instance && class_instance->HasMethod("__eq__"s, 1)) {
-        return class_instance->Call("__eq__"s, {rhs}, context).TryAs<Bool>()->GetValue();
+    if (class_instance && class_instance->HasMethod(EQ_METHOD, 1)) {
+        return class_instance->Call(EQ_METHOD, {rhs}, context).TryAs<Bool>()->GetValue();
     }
 
     throw std::runtime_error("Cannot compare objects for equality"s);
@@ -182,43 +188,27 @@ bool Less(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
     }
 
     auto class_instance = lhs.TryAs<ClassInstance>();
-    if (class_instance && class_instance->HasMethod("__lt__"s, 1)) {
-        return class_instance->Call("__lt__"s, {rhs}, context).TryAs<Bool>()->GetValue();
+    if (class_instance && class_instance->HasMethod(LT_METHOD, 1)) {
+        return class_instance->Call(LT_METHOD, {rhs}, context).TryAs<Bool>()->GetValue();
     }
 
     throw std::runtime_error("Cannot compare objects for less"s);
 }
 
 bool NotEqual(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
-    try {
-        return !Equal(lhs, rhs, context);
-    } catch (...) {
-        throw;
-    }
+    return !Equal(lhs, rhs, context);
 }
 
 bool Greater(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
-    try {
-        return !Less(lhs, rhs, context) && NotEqual(lhs, rhs, context);
-    } catch (...) {
-        throw;
-    }
+    return !Less(lhs, rhs, context) && NotEqual(lhs, rhs, context);
 }
 
 bool LessOrEqual(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
-    try {
-        return Less(lhs, rhs, context) || Equal(lhs, rhs, context);
-    } catch (...) {
-        throw;
-    }
+    return Less(lhs, rhs, context) || Equal(lhs, rhs, context);
 }
 
 bool GreaterOrEqual(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
-    try {
-        return !Less(lhs, rhs, context);
-    } catch (...) {
-        throw;
-    }
+    return !Less(lhs, rhs, context);
 }
 
 }  // namespace runtime
