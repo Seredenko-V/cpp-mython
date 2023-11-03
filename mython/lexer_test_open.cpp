@@ -1,5 +1,5 @@
 #include "lexer.h"
-#include "test_runner_p.h"
+#include "test_runner.h"
 
 #include <sstream>
 #include <string>
