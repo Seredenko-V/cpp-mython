@@ -115,4 +115,4 @@ def <имя метода>(<список параметров>):
 
 
 ## UML-диаграмма runtime-модуля интерпретатора
-![UML](ref "UML-diagram runtime-modul")
+![UML](https://raw.githubusercontent.com/Seredenko-V/cpp-mython/bebff07694717e4adb7d0617118e941edadfe740/images/runtime_module_UML.svg?token=AWESMY2AJW2PCGAW2LEE7NTFIUYCO "UML-diagram runtime-modul")
