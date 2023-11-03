@@ -1,5 +1,5 @@
 #include "statement.h"
-#include "test_runner_p.h"
+#include "test_runner.h"
 
 using namespace std;
 

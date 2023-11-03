@@ -4,11 +4,11 @@
 #include <stdexcept>
 
 namespace parse {
-class Lexer;
+    class Lexer;
 }
 
 namespace runtime {
-class Executable;
+    class Executable;
 }
 
 struct ParseError : std::runtime_error {

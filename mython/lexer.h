@@ -11,7 +11,6 @@
 #include <map>
 
 namespace parse {
-
 const uint16_t NUM_SPACE_DENT_ = 2u; // количество пробелов у отступа
 
 namespace token_type {

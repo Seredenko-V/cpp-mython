@@ -1,8 +1,7 @@
 #include "lexer.h"
 #include "parse.h"
 #include "runtime.h"
-#include "statement.h"
-#include "test_runner_p.h"
+#include "test_runner.h"
 
 #include <iostream>
 
@@ -14,7 +13,8 @@ void RunOpenLexerTests(TestRunner& tr);
 
 namespace ast {
 void RunUnitTests(TestRunner& tr);
-}
+} // namespace ast
+
 namespace runtime {
 void RunObjectHolderTests(TestRunner& tr);
 void RunObjectsTests(TestRunner& tr);
@@ -130,7 +130,6 @@ void TestAll() {
 int main() {
     try {
         TestAll();
-
         RunMythonProgram(cin, cout);
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
